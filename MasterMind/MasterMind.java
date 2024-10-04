@@ -36,6 +36,7 @@ public class MasterMind {
 	
 	public void run(){
 		printIntroduction();
+		makeMasterCode();
 		boolean notValid;
 		int tries = 0, aVal = 65;
 		String choice = "";
@@ -44,23 +45,30 @@ public class MasterMind {
 			printBoard();
 			System.out.println("\nGuess " + (tries+1));
 			do {
-				notValid = false;
 				choice = Prompt.getString("Enter the code using (A,B,C," +
-					"D,E,F). For example, ABCD or abcd from left-to-right");
-				choice = choice.toUpperCase();
-				for(int i = 0; i < choice.length(); i++){
-					if(aVal > (int)choice.charAt(i) || aVal+PEG_LETTERS-1 < (int)choice.charAt(i)){
-						notValid = true;
-					}
-				}
-				if(choice.length() < PEGS_IN_CODE || choice.length() > 
-					PEGS_IN_CODE || notValid ){
-						System.out.println("ERROR: Bad input, try again.");
-					}
-			}while( choice.length() < PEGS_IN_CODE || 
-				choice.length() > PEGS_IN_CODE || notValid);
+					"D,E,F). For example, ABCD or abcd from left-to-right").toUpperCase();
+			}while( !isValid(choice));
+			
+			int exactMatches;
+			int exactMatches;
 			tries++;
 		}while( (!reveal && tries < MAX_GUESSES));
+	}
+	
+	public boolean isValid(String choice){
+		for(int i =0; i< choice.length(); i ++ ){
+			if(choice.length() != 4 || choice.charAt(i) < 'A' || choice.charAt(i) > 'A' + PEG_LETTERS){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public void makeMasterCode(){
+		for ( int i =0; i < PEGS_IN_CODE; i++){
+			char masterCode = (char)('A' + (int)(Math.random() * PEG_LETTERS));
+			master.getPeg(i).setLetter(masterCode);
+		}
 	}
 
 	/**

@@ -24,7 +24,7 @@ public class PegArray {
 		pegs = new Peg[numPegs];
 		
 		for( int i =0; i< pegs.length; i++){
-			pegs[i] = new Peg(' ');
+			pegs[i] = new Peg();
 		}
 	}
 	
