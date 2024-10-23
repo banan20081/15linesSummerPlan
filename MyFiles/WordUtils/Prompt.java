@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -20,14 +19,14 @@ public class Prompt
 {
 	// BufferedReader variables
 	private static InputStreamReader streamReader = 
-										new InputStreamReader(System.in);
+											new InputStreamReader(System.in);
 	private static BufferedReader bufReader = 
-										new BufferedReader(streamReader);
+											new BufferedReader(streamReader);
 
 	/**
 	 *	Prompts user for string of characters and returns the string.
 	 *	@param ask  The prompt line
-	 *	@return input	The string input
+	 *	@return  	The string input
 	 */
 	public static String getString (String ask)
 	{
@@ -45,22 +44,22 @@ public class Prompt
 	/**
 	 *	Prompts the user for a character and returns the character.
 	 *	@param ask  The prompt line
-	 *	@return character or '!' -> The character input
+	 *	@return  	The character input
 	 */
 	public static char getChar (String ask)
 	{
-		String input = getString(ask);
-		if(input.length() == 1){
-			char character = input.charAt(0);
-			return character;
-		}
-		return '!';
+		String input = "ww";
+		while(input.length() >1) {
+			input = getString(ask);
+		} 
+		char character = input.charAt(0);
+		return character;
 	}
 	
 	/**
 	 *	Prompts the user for an integer and returns the integer.
 	 *	@param ask  The prompt line
-	 *	@return val  The integer input
+	 *	@return  	The integer input
 	 */
 	public static int getInt (String ask)
 	{
@@ -85,7 +84,7 @@ public class Prompt
 	 *	@param ask  The prompt line
 	 *	@param min  The minimum integer accepted
 	 *	@param max  The maximum integer accepted
-	 *	@return val  The integer input
+	 *	@return  	The integer input
 	 */
 	public static int getInt (String ask, int min, int max)
 	{
@@ -99,7 +98,7 @@ public class Prompt
 	/**
 	 *	Prompts the user for a double and returns the double.
 	 *	@param ask  The prompt line
-	 *	@return val The double input
+	 *	@return  The double input
 	 */
 	public static double getDouble (String ask)
 	{
@@ -123,7 +122,7 @@ public class Prompt
 	 *	@param ask  The prompt line
 	 *	@param min  The minimum double accepted
 	 *	@param max  The maximum double accepted
-	 *	@return val The double input
+	 *	@return  The double input
 	 */
 	public static double getDouble (String ask, double min, double max)
 	{
