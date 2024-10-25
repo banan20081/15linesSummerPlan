@@ -7,14 +7,15 @@ import java.util.Scanner;
  */
 
 public class Yahtzee{	
-	private int player1Roll;
-	private int player2Roll;
-	
+
 	private YahtzeePlayer[] yahtzeePlayer;
 	
 	
 	public Yahtzee(){
 		yahtzeePlayer = new YahtzeePlayer[2];
+		for(int i =0; i < yahtzeePlayer.length; i ++){
+			yahtzeePlayer[i] = new YahtzeePlayer();
+		}
 	}
 	
 	public static void main(String[] args){
@@ -24,7 +25,7 @@ public class Yahtzee{
 	
 	public void run(){
 		printHeader();
-		promptUser();
+		startGame();
 	}
 	
 	public void printHeader() {
@@ -49,12 +50,18 @@ public class Yahtzee{
 		System.out.println("\n\n");
 	}
 	
-	public void promptUser(){
-		String player1 = Prompt.getString("Player 1, please enter your first name ");
-		String player2 = Prompt.getString("Player 2, please enter your first name ");
+	public void startGame(){
+		int player1Roll = 0; int player2Roll = 0 ; 
+		DiceGroup dg = new DiceGroup();
+		yahtzeePlayer[0].setName(Prompt.getString("Player 1, please enter your first name "));
+		yahtzeePlayer[1].setName(Prompt.getString("\nPlayer 2, please enter your first name "));
 		do{
-			Prompt.getString("Let's see who will go first. " + player1+", please hit enter to roll the dice");
-			Prompt.getString(player2 + " it's your turn. Please hit enter to roll the dice");
+			Prompt.getString("\nLet's see who will go first. " + yahtzeePlayer[0].getName()+", please hit enter to roll the dice");
+			YahtzeeScoreCard Player1 = yahtzeePlayer[0].getScoreCard();
+			dg.printDice();
+			Prompt.getString("\n" + yahtzeePlayer[1].getName() + " it's your turn. Please hit enter to roll the dice");
+			YahtzeeScoreCard Player2 = yahtzeePlayer[2].getScoreCard();
+			dg.printDice();
 		}while(player1Roll == player2Roll);
 	}
 }

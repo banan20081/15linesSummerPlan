@@ -13,6 +13,7 @@ public class Dice {
 	public Dice (int s) {
 		sides = s;
 		rollCount = rollValue = 0;
+		System.out.println("hello im in the constructor");
 	}
 	
 	/*	No-args constructor - default 6 sides */
@@ -28,6 +29,7 @@ public class Dice {
 	public int roll ( ) {
 		rollCount++;
 		rollValue = (int)(Math.random()*sides) + 1;
+		System.out.println(rollValue);
 		return rollValue;
 	}
 	

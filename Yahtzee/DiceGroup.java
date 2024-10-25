@@ -23,11 +23,17 @@ public class DiceGroup {
 	/*	you complete */
 	public DiceGroup() {
 		die = new Dice[NUM_DICE];
+		
+		for(int i = 0; i < die.length; i++){
+			die[i] = new Dice();
+		}
 	}
 	
 	/**	you complete */
 	public void rollDice() {
-		
+		for(int i = 0; i < die.length ; i++){
+			die[i].roll();
+		}
 	}
 	
 	/**	Hold the dice in the rawHold and roll the rest.
@@ -42,7 +48,9 @@ public class DiceGroup {
 	/**	getters - you complete */
 	
 	/**	@return the total value of the DiceGroup - you complete */
-	public int getTotal() { }
+	public int getTotal() {
+		return 0;
+	}
 	
 	/**
 	 *  Prints out the images of the dice

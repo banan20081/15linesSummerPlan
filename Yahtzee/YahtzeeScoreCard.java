@@ -3,9 +3,9 @@
  * @author Banan Badran
  * @since October 23,2024
  */
-public class YahtzeePlayer {
+public class YahtzeeScoreCard {
 
-	public YahtzeePlayer(){}
+	public YahtzeeScoreCard(){}
 	
 	/**
 	 *  Print the scorecard header
@@ -42,7 +42,9 @@ public class YahtzeePlayer {
 	 *  @param dg  The DiceGroup to score
 	 *  @return  true if change succeeded. Returns false if choice already taken.
 	 */
-	public boolean changeScore(int choice, DiceGroup dg) {}
+	public boolean changeScore(int choice, DiceGroup dg) {
+		return false;
+	}
 	
 	/**
 	 *  Change the scorecard for a number score 1 to 6
@@ -70,5 +72,9 @@ public class YahtzeePlayer {
 	public void chance(DiceGroup dg) {}
 	
 	public void yahtzeeScore(DiceGroup dg) {}
+	
+	public int getScore(int i){
+		return 0;
+	}
 	
 }
