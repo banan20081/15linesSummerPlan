@@ -24,14 +24,14 @@ public class DiceGroup {
 	public DiceGroup() {
 		die = new Dice[NUM_DICE];
 		
-		for(int i = 0; i < die.length; i++){
+		for(int i =0 ; i < die.length; i++) { 
 			die[i] = new Dice();
 		}
 	}
 	
 	/**	you complete */
-	public void rollDice() {
-		for(int i = 0; i < die.length ; i++){
+	public void rollDice() {																																			// worked on october 25
+		for(int i = 0 ; i < die.length; i++){
 			die[i].roll();
 		}
 	}
@@ -43,13 +43,47 @@ public class DiceGroup {
 	 *
 	 *	you complete
 	 */
-	public void rollDice(String rawHold) { }
+	public void rollDice(String rawHold) { 
+		if(rawHold.length() ==0){
+			rollDice();
+			return;
+		}
+		
+		boolean[] holdIndex = new boolean[NUM_DICE];
+		for(int i=0; i< rawHold.length(); i++){
+			for(int j =0; j< NUM_DICE; j++){
+				if(!holdIndex[j] && rawHold.charAt(i) -'0' == (j+1) ){
+					holdIndex[j] = true;
+				}
+			}
+			
+		}
+		
+		for(int i =0; i < die.length; i++){
+			if(!holdIndex[i]){
+				die[i].roll();
+			}
+		}
+	}
 	
 	/**	getters - you complete */
 	
+	
+	public Dice[] getDiceArray(){
+		return die;
+	}
+	
+	public int getDiceValue(int i){
+		return die[i].getValue();
+	}
+	
 	/**	@return the total value of the DiceGroup - you complete */
-	public int getTotal() {
-		return 0;
+	public int getTotal() { //return the total score, all roll added together																							// worked on october 25
+		int sum = 0; 
+		for(int i =0 ; i < die.length; i++){
+			sum += die[i].getValue();
+		}
+		return sum;
 	}
 	
 	/**
