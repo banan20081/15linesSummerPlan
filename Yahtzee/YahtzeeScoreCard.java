@@ -1,5 +1,7 @@
 
 /**
+ * This class is responsible for all the calculation done for Yahtzee game
+ * 
  * @author Banan Badran
  * @since October 23,2024
  */
@@ -28,6 +30,9 @@ public class YahtzeeScoreCard {
 						"---------------------------+\n");
 	}
 	
+	/**
+	 * prints the index of each category, under the table 
+	 */
 	public void printCardHeader2(){
 		System.out.printf("     \t\t  1    2    3    4    5    6   7    8    9" +
 						"    10   11   12   13\n");
@@ -106,6 +111,11 @@ public class YahtzeeScoreCard {
 			setScore(0,7);
 	}
 	
+	/**
+	 *	Updates the scorecard for Four Of A Kind choice.
+	 *
+	 *	@param dg	The DiceGroup to score
+	 */	
 	public void fourOfAKind(DiceGroup dg) {
 		if(isOFKind(4,dg))
 			setScore(dg.getTotal(), 8);
@@ -114,6 +124,11 @@ public class YahtzeeScoreCard {
 		
 	}
 	
+	/**
+	 * calculates and determine whether the rolled value is a fullHouse
+	 * meaning 3 of a kind and 2 of a kind.
+	 * @param dg
+	 */
 	public void fullHouse(DiceGroup dg) {
 		boolean kind3Exist = false, kind2Exist =false ; 
 		int[] tempArr = new int[6];
