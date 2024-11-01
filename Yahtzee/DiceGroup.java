@@ -68,7 +68,6 @@ public class DiceGroup {
 	
 	/**	getters - you complete */
 	
-	
 	public Dice[] getDiceArray(){
 		return die;
 	}

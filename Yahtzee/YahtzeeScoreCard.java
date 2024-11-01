@@ -6,11 +6,14 @@
 public class YahtzeeScoreCard {
 
 	private int[] scores = new int[13];
+	private boolean[] usedCategories = new boolean[13];
+	private int valRepeated;
 	
 	public YahtzeeScoreCard(){
 		for(int i =0; i < scores.length; i++){
 			scores[i] = -1;
 		}
+		valRepeated = 0;
 	}
 	
 	/**
@@ -57,6 +60,18 @@ public class YahtzeeScoreCard {
 		if(scores[choice - 1] !=-1){
 			return false;
 		}
+		
+		switch(choice) {
+			case 1: case 2: case 3: case 4: case 5: case 6: numberScore(choice, dg);break;
+			case 7: threeOfAKind(dg); break;
+			case 8: fourOfAKind(dg); break;
+			case 9: fullHouse(dg); break;
+			case 10: smallStraight(dg); break;
+			case 11: largeStraight(dg); break;
+			case 12: chance(dg); break;
+			case 13: yahtzeeScore(dg); break;
+			default: return false;
+		}
 		return true;
 	}
 	
@@ -84,63 +99,96 @@ public class YahtzeeScoreCard {
 	 *	@param dg	The DiceGroup to score
 	 */	
 	public void threeOfAKind(DiceGroup dg) {
-		if(is3OfAKind(dg)){
-			scores[6] = dg.getTotal();
+		if(isOFKind(3,dg)){
+			setScore(dg.getTotal(), 7);
 		}
-	}
-	
-	public boolean is3OfAKind(DiceGroup dg){
-		int count = 0; 
-		for(int i = 1 ; i< 6; i++){
-			for(int j = 0; j < dg.getDiceArray().length; j++){
-				if(dg.getDiceValue(j) == i){
-					count++;
-				}
-			}
-			if(count >= 3){
-				return true;
-			}
-		}
-		return false;
+		else 
+			setScore(0,7);
 	}
 	
 	public void fourOfAKind(DiceGroup dg) {
-		int count = 0; 
-		for(int i = 1 ; i< 6; i++){
-			for(int j = 0; j < dg.getDiceArray().length; j++){
-				if(dg.getDiceValue(j) == i){
-					count++;
-				}
-			}
-			if(count >= 4){
-				scores[7] = dg.getTotal();
-			}
-		}
+		if(isOFKind(4,dg))
+			setScore(dg.getTotal(), 8);
+		else
+			setScore(0, 8);
 		
 	}
 	
 	public void fullHouse(DiceGroup dg) {
+		boolean kind3Exist = false, kind2Exist =false ; 
+		int[] tempArr = new int[6];
+		for(int i = 0; i < dg.getDiceArray().length; i++){
+			int temp = dg.getDiceArray()[i].getValue();
+			tempArr[temp-1]++;
+		}
 		
+		for(int i: tempArr){
+			if(i ==3) kind3Exist = true;
+			if(i ==2) kind2Exist = true;
+		}
+		
+		if(kind3Exist && kind2Exist) setScore(25, 9);
+		else setScore(0, 9);
 	}
 	
 	public void smallStraight(DiceGroup dg) {
-		int counter = 0; 
-		for(int i =1; i < 6; i++ ){
-			for(int j =0; j < dg.getDiceArray().length; j++){
-				if(dg.getDiceValue(j) == i){
-					counter++;
-					break;
-				}
-			}
+		if(isTypeStraight(4, dg)){
+			setScore(30,10);
 		}
-		if(counter == 4){
-			scores[9] =30;
+		else{
+			setScore(0,10);
 		}
 	} 
 	
 	public void largeStraight(DiceGroup dg) {
+		if(isTypeStraight(5, dg))
+			setScore(40,11);
+		else
+			setScore(0,11);
+	}
+	
+	public void chance(DiceGroup dg) {
+		setScore(dg.getTotal(), 12);
+	}
+	
+	public void yahtzeeScore(DiceGroup dg) {
+		if(isOFKind(5,dg))
+			setScore(50,13);
+		else
+			setScore(0,13);
+	}
+	
+	public int getScore(int index){
+		return scores[index-1];
+	}
+	
+	public void setScore(int score, int category) {
+        if (!usedCategories[category - 1]) {
+            scores[category - 1] = score;
+            usedCategories[category - 1] = true;
+        }
+    }
+	
+	public int[] getScoreArr(){
+		return scores;
+	}
+	
+	public boolean isOFKind(int checkKind, DiceGroup dg){
+		int[] tempArr = new int[6];
+		for(int i = 0; i < dg.getDiceArray().length; i++){
+			int temp = dg.getDiceArray()[i].getValue();
+			tempArr[temp-1]++;
+		}
+		
+		for(int i: tempArr){
+			if(i >= checkKind) return true;
+		}
+		return false;
+	}
+	
+	public boolean isTypeStraight(int straightCheck, DiceGroup dg){
 		int counter = 0; 
-		for(int i =1; i < 6; i++ ){
+		for(int i =1; i <= 6; i++ ){
 			for(int j =0; j < dg.getDiceArray().length; j++){
 				if(dg.getDiceValue(j) == i){
 					counter++;
@@ -148,31 +196,9 @@ public class YahtzeeScoreCard {
 				}
 			}
 		}
-		if(counter ==5){
-			scores[10] = 40;
+		if(counter >= straightCheck){
+			return true;
 		}
-		
-	}
-	
-	public void chance(DiceGroup dg) {
-		scores[11] = dg.getTotal();
-	}
-	
-	public void yahtzeeScore(DiceGroup dg) {
-		
-		int valueToCheck = dg.getDiceValue(0);
-		for(int i =1 ; i< dg.getDiceArray().length; i++){
-			if(valueToCheck !=  dg.getDiceValue(i)){
-				scores[12] =0;
-			}
-		}		
-	}
-	
-	public int getScore(int index ){
-		return scores[index-1];
-	}
-	
-	public int[] getScoreArr(){
-		return scores;
+		return false;
 	}
 }

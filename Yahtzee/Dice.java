@@ -37,3 +37,9 @@ public class Dice {
 	/**	@return		the last rolled value */
 	public int getValue ( ) { return rollValue; }
 }
+
+
+
+
+
+

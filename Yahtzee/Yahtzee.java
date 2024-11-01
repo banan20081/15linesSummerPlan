@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 /**
  * 
  * @author Banan Badran
@@ -35,21 +33,17 @@ public class Yahtzee{
 		printHeader();
 		promptUser();
 		
-		YahtzeeScoreCard ysc = new YahtzeeScoreCard();
-		ysc.printCardHeader();
-		ysc.printPlayerScore(yahtzeePlayer[0]);
-		ysc.printPlayerScore(yahtzeePlayer[1]);
-		ysc.printCardHeader2();
+		printTable(player1, player2, false);
 		final int NUM_OF_ROUNDS = 13;
 		for(int i =0; i < NUM_OF_ROUNDS; i++){
 			System.out.println("\nRound " + (i+1) + " of 13 rounds\n");
 			if(player1Roll > player2Roll){
-				playerTurn(player1 ,yahtzeePlayer[0] , dgP1);
-				playerTurn(player2, yahtzeePlayer[1] , dgP2);
+				playerTurn(player1 ,player1, player2, yahtzeePlayer[0] , dgP1);
+				playerTurn(player2, player1, player2, yahtzeePlayer[1] , dgP2);
 			}
 			else{
-				playerTurn(player2 , yahtzeePlayer[1], dgP2);
-				playerTurn(player1 , yahtzeePlayer[0], dgP1);
+				playerTurn(player2 , player1, player2, yahtzeePlayer[1], dgP2);
+				playerTurn(player1 ,player1, player2, yahtzeePlayer[0], dgP1);
 			}
 		}
 		int player1FinalScore =0 ;
@@ -60,7 +54,7 @@ public class Yahtzee{
 		}
 		
 		System.out.printf("%s\t\t score total: %d\n", yahtzeePlayer[0].getName() ,player1FinalScore);
-		System.out.printf("%s\t\t score total: %d\n\n", yahtzeePlayer[0].getName() ,player2FinalScore);
+		System.out.printf("%s\t\t score total: %d\n\n", yahtzeePlayer[1].getName() ,player2FinalScore);
 		if(player1FinalScore > player2FinalScore){
 			System.out.println("Congratulation " + yahtzeePlayer[0].getName() + " YOU WON!!!\n");
 		}
@@ -71,17 +65,14 @@ public class Yahtzee{
 			System.out.println("Congratulation!! YOU BOTH TIED\n");
 		}
 		
-		
-		
 	}
 	
-	public void playerTurn(YahtzeeScoreCard playerCard, YahtzeePlayer player , DiceGroup dg) {
-		Prompt.getString(player.getName() + " it's your turn to play. Please hit enter to roll the dice ");
+	public void playerTurn(YahtzeeScoreCard playerCard, YahtzeeScoreCard player1, YahtzeeScoreCard player2, YahtzeePlayer player , DiceGroup dg) {
+		Prompt.getString("\n" + player.getName() + " it's your turn to play. Please hit enter to roll the dice ");
 		dg.rollDice();
 		dg.printDice();
 		String holdVal ="";
 		for(int i =1; i<3; i++) {
-			System.out.println("index of i : " + i);
 			holdVal = Prompt.getString("\nWhich di(c)e would you like to keep? Enter the " +
 			"values you'd like to 'hold' without\nspaces. For examples, if you'd " +
 			"like to 'hold' die 1, 2, and 5, enter 125\n(enter -1 if you'd like to" +
@@ -106,29 +97,33 @@ public class Yahtzee{
 				dg.printDice();
 			}
 		}
-		playerCard.printCardHeader();
-		playerCard.printPlayerScore(yahtzeePlayer[0]);
-		playerCard.printPlayerScore(yahtzeePlayer[1]);
-		playerCard.printCardHeader2();
-		int choice = Prompt.getInt(player.getName()+ "  now you need to make a choice. Pick a valid integer from the list above " , 1,13);
-		for(int i =0; i < playerCard.getScoreArr().length; i++){
-			if(choice == (i+1)){
-				System.out.println("indes ix " + (i+1));
-				
-				break;
+		printTable(player1, player2, true);
+		int choice =0;;
+		boolean valid = false;;
+		while(!valid){
+			choice = Prompt.getInt("\n"+ player.getName()+ " now you need to make a choice. Pick a valid integer from the list above (1 -13) ");
+			if(choice < 1 || choice > 13){
+				System.out.println("invalid");
+			}
+			else if(playerCard.changeScore(choice, dg)){
+				valid = true;
+			}
+			else{
+				System.out.print("taken");
 			}
 		}
+			playerCard.getScore(choice);
+			printTable(player1, player2, false);
 		
-		System.out.println(playerCard.getScore(choice));
 	}
 	
-	public boolean isScoreFull(YahtzeeScoreCard player){
-		for(int i=0; i < player.getScoreArr().length; i++){
-			if(player.getScoreArr()[i] == -1){
-				return false;
-			}
-		}
-		return true;
+	public void printTable(YahtzeeScoreCard player1, YahtzeeScoreCard player2, boolean isPrintBottom){
+		YahtzeeScoreCard ysc = new YahtzeeScoreCard();
+		ysc.printCardHeader();
+		player1.printPlayerScore(yahtzeePlayer[0]);
+		player2.printPlayerScore(yahtzeePlayer[1]);
+		if(isPrintBottom)
+			ysc.printCardHeader2();
 	}
 	
 	public void printHeader() {
@@ -158,25 +153,20 @@ public class Yahtzee{
 		yahtzeePlayer[1].setName(Prompt.getString("\nPlayer 2, please enter your first name "));
 		do{
 			Prompt.getString("\nLet's see who will go first. " + yahtzeePlayer[0].getName()+", please hit enter to roll the dice");
-			
 			DiceGroup dgP1 = new DiceGroup();
 			dgP1.rollDice();
 			player1Roll = dgP1.getTotal();
 			dgP1.printDice();
 			Prompt.getString("\n" +yahtzeePlayer[1].getName() + " it's your turn. Please hit enter to roll the dice");
-			
 			dgP1.rollDice();
 			player2Roll = dgP1.getTotal();
 			dgP1.printDice();
 		}while(player1Roll == player2Roll);
 		
-		
 		System.out.println(yahtzeePlayer[0].getName() +", you rolled a sum of " + player1Roll +", and "+ yahtzeePlayer[1].getName() + ", you rolled a sum of " +player2Roll + ". ");
-		if(player1Roll > player2Roll){
+		if(player1Roll > player2Roll)
 			System.out.println( yahtzeePlayer[0].getName()+", since your sum was higher, you'll roll first.");
-		}
-		else{
+		else
 			System.out.println(yahtzeePlayer[1].getName() + " since your sum was higher, you'll roll first. ");
-		}
 	}
 }
