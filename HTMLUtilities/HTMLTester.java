@@ -50,7 +50,7 @@ public class HTMLTester {
 			String line = input.nextLine();
 			System.out.println("\n" + line);
 			String [] tokens = util.tokenizeHTMLString(line);
-			//util.printTokens(tokens);
+			util.printTokens(tokens);
 		}
 		input.close();
 	}

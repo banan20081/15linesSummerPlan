@@ -3,11 +3,17 @@ import java.util.ArrayList;
 /**
  *	Utilities for handling HTML
  *
- *	@author	Banan Badran
- *	@since	Novemeber 4, 2024
+ *	@author	
+ *	@since	
  */
 public class HTMLUtilities {
 
+	// NONE = not nested in a block, COMMENT = inside a comment block
+	// PREFORMAT = inside a pre-format block
+	private enum TokenState { NONE, COMMENT, PREFORMAT };
+	// the current tokenizer state
+	private TokenState state;
+	
 	/**
 	 *	Break the HTML string into tokens. The array returned is
 	 *	exactly the size of the number of tokens in the HTML string.
@@ -17,37 +23,68 @@ public class HTMLUtilities {
 	 *	@return				the String array of tokens
 	 */
 	public String[] tokenizeHTMLString(String str) {
-		// make the size of the array large to start
-		String[] result = new String[10000];
-		String word= "";
-		ArrayList<String> tempArr = new ArrayList();
-		
-		//~ for(int i =0; i< str.length()-1 ;i++){
-			//~ if(str.charAt(i) == '<' ){
-				//~ tempArr.add(str.substring(str.indexOf('<'), str.indexOf('>')+1));
-			//~ }
-		//~ }
-		
-		int count =0;
-		while(str.length() > 0){
-			if(str.indexOf('<') != -1) {
-				tempArr.add(str.substring(str.indexOf("<") , str.indexOf(">")+1));
-				str = str.substring(str.indexOf(">")+1);
+        ArrayList<String> tempArr = new ArrayList<>();
+
+        for(int i=0 ; i < str.length(); i++){
+			char c = str.charAt(i);
+			// Tokenize Tags
+			if(c == '<'){
+				if(i+3<str.length() && str.substring(i, i +4).equals("<!--")){
+					state = TokenState.COMMENT;
+					System.out.println(state);
+				}
+				else if(i+4<str.length() && str.substring(i, i +5).equals("<pre>")){
+					state = TokenState.PREFORMAT;
+					System.out.println(state);
+				}
+				else{
+					tempArr.add(str.substring(i, str.indexOf('>' , i) + 1));
+					i = str.indexOf('>' , i);
+					//System.out.println("i index"+i);
+				}
 			}
-		}
+			
+			// Tokenize Words
+			if( Character.isLetter(c) ){
+				int start = i;
+				//~ i++;
+                while (i < str.length() && (Character.isLetter(str.charAt(i)) || 
+                        (str.charAt(i) == '-' && i + 1 < str.length() && Character.isLetter(str.charAt(i + 1))))) {
+                    i++;
+                }
+               // System.out.println("here is the word :: [" + str.substring(start, i)+"]" +i);
+                tempArr.add(str.substring(start, i));
+			}
+			
+			// Tokenize Numbers
+            //~ if (Character.isDigit(c) || (c == '-' && i + 1 < str.length() && Character.isDigit(str.charAt(i + 1)))) {
+                //~ int start = i;
+                //~ //i++;
+                //~ while (i < str.length() && (Character.isDigit(str.charAt(i)) || str.charAt(i) == '.' || 
+                        //~ str.charAt(i) == 'e' || str.charAt(i) == 'E' || str.charAt(i) == '-' || str.charAt(i) == '+')) {
+                    //~ i++;
+                //~ }
+                //~ tempArr.add(str.substring(start, i));
+            //~ }
+			
+			// Tokenize Punctuations
+			if(i<str.length() && isPunctuation(str.charAt(i)) ){
+				tempArr.add(String.valueOf(str.charAt(i)));
+			}
 		
-		for(int i =0; i < tempArr.size(); i++){
-			System.out.println("token [" +i + "] " +tempArr.get(i));
 		}
-		
-		// return the correctly sized array
-		return result;
-	}
-	
-	private String tokenizeNumbers(String strToCheck){
-		String str = "";
-		return str;
-	}
+
+        return tempArr.toArray(new String[0]);
+    }
+
+    /**
+     * Check if a character is punctuation
+     * @param c the character to check
+     * @return true if the character is a punctuation symbol
+     */
+    private boolean isPunctuation(char c) {
+        return ".,;:()?!&~=+-".indexOf(c) != -1;
+    }
 	
 	/**
 	 *	Print the tokens in the array to the screen
