@@ -1,10 +1,12 @@
+import java.util.List;
+import java.util.ArrayList;
 /**
  *	AnagramMaker - <description goes here>
  *
  *	Requires the WordUtilities, SortMethods, Prompt, and FileUtils classes
  *
  *	@author	Banan Badran
- *	@since	1/17/2025
+ *	@since	1/19/2025
  */
 public class AnagramMaker {
 								
@@ -61,27 +63,61 @@ public class AnagramMaker {
 	public void runAnagramMaker() {
 		String phrase;
 		System.out.println();
-		//do{
+		do{
 			phrase = Prompt.getString("Word(s), name or phrase (q to quit)");
-		//}while(phrase!=null && phrase.length()<1);
-		if(phrase==null||phrase.equalsIgnoreCase("q")) return;
-		numWords = Prompt.getInt("Number of words in anagram");
-		maxPhrases = Prompt.getInt("Maximum number of anagrams to print");
-		System.out.println(phrase);
-		int searchNum=0;
+			if(phrase.equalsIgnoreCase("q")) return;
+			numWords = Prompt.getInt("Number of Words in anagram");
+			maxPhrases = Prompt.getInt("Maximum number of anagrams to print");
+			ArrayList<String> anagrams = new ArrayList<String>();
+			String numFreeStr ="";
+			for(int i =0; i<phrase.length(); i++)
+				if(Character.isLetter(phrase.charAt(i))) 
+					numFreeStr+=phrase.charAt(i);
+					
+			numPhrases =0;
+			anagramMaker(numFreeStr.toLowerCase(), anagrams);
+		}while(!phrase.equalsIgnoreCase("q"));
+	}
+	
+	public void anagramMaker(String phrase, ArrayList<String> anagram){
 		
-		while(phrase.length()!=0){
-			//System.out.println(searchNum);
-			System.out.println(phrase.substring(0, phrase.indexOf(" ")));
-			phrase= phrase.substring(phrase.indexOf(" ")) ;
-			//recursiveFinder(phrase.substring(searchNum, phrase.indexOf(" ",searchNum)).trim());
-			
+		if(numPhrases >= maxPhrases) return;
+		
+		if(phrase.isEmpty()) {
+			if(anagram.size() == numWords){
+				for(int i=0;i< anagram.size();i++){
+					System.out.print(anagram.get(i) + " ");
+				}
+				System.out.println();
+				numPhrases++;
+
+			}
+			return;
 		}
+		
+		if(anagram.size() >= numWords) return;
+		
+		ArrayList<String> words = wu.allWords(phrase);
+
+		
+		for(int i=0;i<words.size(); i++){
+			String newPhrase = phrase;
+			anagram.add(words.get(i));
+			// add new word to anagram array
+
+			// remove letters 
+			for(int k=0; k < words.get(i).length();k++){ // every letter exist in phase , no need to double check for existance 
+						newPhrase = newPhrase.substring(0,newPhrase.indexOf(words.get(i).charAt(k))) +
+								newPhrase.substring(newPhrase.indexOf(words.get(i).charAt(k))+1);
+			}
+			anagramMaker(newPhrase, anagram);
+			// remove it 
+			anagram.remove(anagram.size()-1);
+		}
+		
+		return;
+		
 	}
-//max sec =10
-// if number greater tan what it can do just print whatever it can then terminates
-	public void recursiveFinder(String phrase){
-		System.out.println("here "+phrase);
-	}
+
 	
 }

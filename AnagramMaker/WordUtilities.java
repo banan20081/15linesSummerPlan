@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- *	WordFinder - Does the following
+ *	WordUtilities - Does the following
  *		readWordsFromFile - reads words from a file and puts them into the List words;
  *				the file must contain a list of random words separated by spaces
  *				and/or new lines
@@ -73,12 +73,12 @@ public class WordUtilities {
 	 *	@param target			the word to search for
 	 *	@param low				the low index of range to search
 	 *	@param high				the high index of range to search
-	 *	@return					if found, the index of the word inside words;
+	 *	@return	an int value	if found, the index of the word inside words;
 	 *							if not found, a negative number
 	 */
 	public int binarySearchRecurse(List<String> listOfWords, String target,
 										int low, int high) {
-		// if low index is greater than high, target not found and return -1
+		// if low index is greater than high, target not found and return negative number
 		if(low>high) return -1;
 		// compute middle index
 		int mid = (low+high)/2;
@@ -91,6 +91,7 @@ public class WordUtilities {
 			return binarySearchRecurse(listOfWords, target, low, mid-1);
 		// otherwise, target is greater than mid so check top of list recursively
 		return binarySearchRecurse(listOfWords, target, mid+1, high);
+		//return -1;	// temporary, just to make compiling work, remove later
 	}
 	
 	/**
@@ -98,58 +99,64 @@ public class WordUtilities {
 	 *	Precondition: list of words must be sorted in ascending order
 	 *	@param listOfWords		list of words to search
 	 *	@param target			the word to search for
-	 *	@return	mid				if found, the index of the word inside words;
-	 *	@return -1				if not found, a negative number
+	 *	@return					if found, the index of the word inside words;
+	 *							if not found, a negative number
 	 */
 	public int binarySearchIterative(List<String> listOfWords, String target) {
 		int left = 0;
 		int right = listOfWords.size()-1;
-		while (left <= right) {
+		while (left <= right)
+		{
 			int mid = (left + right) / 2;
 			int compare = target.compareTo(listOfWords.get(mid));
-			if ( compare == 0 ) // value equals listOfWords.get(mid)
+			if ( compare == 0 ) // value = listOfWords.get(mid)
 				return mid;
 			else if ( compare < 0 ) // value < listOfWords.get(mid)
 				right = mid - 1;
 			else // value > listOfWords.get(mid)
 				left = mid + 1;
 		}
-		// if target not found in list return -1
+		// if target not found in list return negative number
 		return -1;
 	}
 	
-	/********************************************************************/
-	/************************* Test program *****************************/
-	/********************************************************************/
-	private final String FILE_NAME = "randomWords.txt";	// list of random words
+	//~ /********************************************************************/
+	//~ /************************* Test program *****************************/
+	//~ /********************************************************************/
+	//~ private final String FILE_NAME = "randomWords.txt";	// list of random words
 
-	public static void main(String[] args) {
-		WordUtilities wu = new WordUtilities();
-		wu.run();
-	}
+	//~ public static void main(String[] args) {
+		//~ WordUtilities wu = new WordUtilities();
+		//~ wu.run();
+	//~ }
 	
-	public void run() {
-		// 1. read the file of words
-		readWordsFromFile(FILE_NAME);
+	//~ /**
+	 //~ * this method is repsonsible for testing the program
+	 //~ */
+	//~ public void run() {
+		//~ // 1. read the file of words
+		//~ readWordsFromFile(FILE_NAME);
 		
-		// 2. sort the words
-		SortMethods sm = new SortMethods();
-		sm.mergeSort(words);
+		//~ // 2. sort the words
+		//~ SortMethods sm = new SortMethods();
+		//~ sm.mergeSort(words);
 		
-		// 3. find the words
-		System.out.println("\nTesting findWord method\n-----------------------");
-		String[] wordList = { "hello", "foo", "utilitarian", "frufru", 
-							  "student", "fubsy", "pulchritude", "callipygian",
-							  "whithersoever" };
-		for (int a = 0; a < wordList.length; a++) {
-			System.out.print("\"" + wordList[a] + "\"");
-			int index = findWord(wordList[a]);
-			if (index >= 0) System.out.println(" found, index = " + index);
-			else System.out.println(" NOT found");
-		}
+		//~ // 3. find the words
+		//~ System.out.println("\nTesting findWord method\n-----------------------");
+		//~ String[] wordList = { "hello", "foo", "utilitarian", "frufru", 
+							  //~ "student", "fubsy", "pulchritude", "callipygian",
+							  //~ "whithersoever" };
+		//~ for (int a = 0; a < wordList.length; a++) {
+			//~ System.out.print("\"" + wordList[a] + "\"");
+			//~ int index = findWord(wordList[a]);
+			//~ if (index >= 0) System.out.println(" found, index = " + index);
+			//~ else System.out.println(" NOT found");
+		//~ }
 		
-		System.out.println();
-	}
+		//~ System.out.println();
+	//~ }
+	
+	////
 	
 		/**
 	 *	Determines if a word's characters match a group of letters

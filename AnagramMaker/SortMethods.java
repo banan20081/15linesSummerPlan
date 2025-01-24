@@ -100,32 +100,29 @@ public class SortMethods {
 	
 	public static void main(String[] args) {
 		SortMethods se = new SortMethods();
-		se.run();
+		//~ se.run();
 	}
 	
-	/** tests the arrayList of words received from randomWords.txt and 
-	 * displays the arraylist before and after sorting
-	 */
-	public void run() {
-		List<String> arr = new ArrayList<String>();
-		// Fill List with random words from file		
-		fillArray(arr);
+	//~ public void run() {
+		//~ List<String> arr = new ArrayList<String>();
+		//~ // Fill List with random words from file		
+		//~ fillArray(arr);
 		
-		System.out.println("\nMerge Sort");
-		System.out.println("Array before sort:");
-		printArray(arr);
-		System.out.println();
-		mergeSort(arr);
-		System.out.println("Array after sort:");
-		printArray(arr);
-		System.out.println();
-	}
+		//~ System.out.println("\nMerge Sort");
+		//~ System.out.println("Array before sort:");
+		//~ printArray(arr);
+		//~ System.out.println();
+		//~ mergeSort(arr);
+		//~ System.out.println("Array after sort:");
+		//~ printArray(arr);
+		//~ System.out.println();
+	//~ }
 	
-	// Fill String array with words
-	public void fillArray(List<String> arr) {
-		Scanner inFile = FileUtils.openToRead(FILE_NAME);
-		while (inFile.hasNext())
-			arr.add(inFile.next());
-		inFile.close();
-	}
+	//~ // Fill String array with words
+	//~ public void fillArray(List<String> arr) {
+		//~ Scanner inFile = FileUtils.openToRead(FILE_NAME);
+		//~ while (inFile.hasNext())
+			//~ arr.add(inFile.next());
+		//~ inFile.close();
+	//~ }
 }

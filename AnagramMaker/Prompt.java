@@ -48,12 +48,18 @@ public class Prompt
 	 */
 	public static char getChar (String ask)
 	{
-		String input = "ww";
-		while(input.length() >1) {
-			input = getString(ask);
-		} 
-		char character = input.charAt(0);
-		return character;
+		//~ String input = "ww";
+		//~ while(input.length() >1) {
+			//~ input = getString(ask);
+		//~ } 
+		//~ char character = input.charAt(0);
+		//~ return character;
+		String val = "";
+		boolean found = false;
+		do {
+			val = getString(ask);
+		} while(val.length() != 1);
+		return val.charAt(0);
 	}
 	
 	/**
