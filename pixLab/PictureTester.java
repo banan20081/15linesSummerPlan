@@ -68,7 +68,7 @@ public class PictureTester
     //testGrayscale();
     //testFixUnderwater();
     //testMirrorVertical();
-    testMirrorTemple();
+    //testMirrorTemple();
     //testMirrorArms();
     //testMirrorGull();
     //testMirrorDiagonal();
@@ -82,14 +82,38 @@ public class PictureTester
     //testSetRedToHalfValueInTopHalf();
     //testClearBlueOverValue(200);
     //testGetAverageForColumn(0);
+    //testKeepOnlyBlue();
+    //testNegate();
+    testgrayScale();
   }
   
-  // bana here:
+  // banan here:
   
   public static void testKeepOnlyBlue(){
 	  Picture beach = new Picture("images/beach.jpg");
 	  beach.explore();
 	  beach.keepOnlyBlue();
+	  beach.explore();
+  }
+  
+  public static void testNegate(){
+	  Picture beach = new Picture("images/beach.jpg");
+	  beach.explore();
+	  beach.negate();
+	  beach.explore();
+  } 
+  
+  public static void testgrayScale(){
+	  Picture beach = new Picture("images/beach.jpg");
+	  beach.explore();
+	  beach.grayscale();
+	  beach.explore();
+  } 
+  
+  public static void testpixelate(){
+	  Picture beach = new Picture("images/beach.jpg");
+	  beach.explore();
+	  beach.pixelate(2);
 	  beach.explore();
   }
   

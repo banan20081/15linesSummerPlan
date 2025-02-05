@@ -230,5 +230,69 @@ public class Picture extends SimplePicture
   }
   
   
-  public void 
+  public void keepOnlyBlue(){
+	  Pixel[][] pixels = this.getPixels2D();
+	  for (Pixel[] rowArray : pixels)
+	  {
+		  for (Pixel pixelObj : rowArray)
+		  {
+			pixelObj.setRed(0);
+			pixelObj.setGreen(0);
+		  }
+	  }
+  }
+  
+  public void negate(){
+	  Pixel[][] pixels = this.getPixels2D();
+	  for (Pixel[] rowArray : pixels)
+	  {
+		  for (Pixel pixelObj : rowArray)
+		  {
+			pixelObj.setRed(255-pixelObj.getRed());
+			pixelObj.setGreen(255-pixelObj.getGreen());
+			pixelObj.setBlue(255-pixelObj.getBlue());
+		  }
+	  }
+  }
+  
+  public void grayscale(){
+	  Pixel[][] pixels = this.getPixels2D();
+	  for (Pixel[] rowArray : pixels)
+	  {
+		  for (Pixel pixelObj : rowArray)
+		  {
+			  int avg = (pixelObj.getRed()+ pixelObj.getGreen()+ 
+													pixelObj.getBlue())/3;
+			pixelObj.setRed(avg);
+			pixelObj.setGreen(avg);
+			pixelObj.setBlue(avg);
+		  }
+	  }
+  }
+  
+  /** To pixelate by dividing area into size x size.
+   * @param size Side length of square area to pixelate.
+   */
+   public void pixelate(int size){
+	   Pixel[][] pixels = this.getPixels2D();
+	   for(int row=0; row<size; row++){
+		   for(int col=0; col <size; col++){
+			   if(row ==0){
+				   
+			   }
+			   else if(col ==0){
+				   
+			   }
+			   else if(row == size-1){
+				   
+			   }
+			   else if(col == size -1){
+				   
+			   }
+			   else{
+				   
+			   }
+		   }
+	   }
+   }
 } // this } is the end of class Picture, put all new methods before this
