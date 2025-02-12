@@ -11,7 +11,7 @@ import java.util.List; // resolves problem with java.awt.List and java.util.List
  * SimplePicture and allows the student to add functionality to
  * the Picture class.  
  * 
- * @author Barbara Ericson ericson@cc.gatech.edu
+ * @author Barbara Ericson ericson@cc.gatech.edu and Banan Badran
  */
 public class Picture extends SimplePicture 
 {
@@ -281,8 +281,10 @@ public class Picture extends SimplePicture
         for (int row = 0; row < pixels.length; row += size) {
             for (int col = 0; col < pixels[0].length; col += size) {
                 int sumRed = 0, sumGreen = 0, sumBlue = 0, count = 0;
-                for (int r = row; (r < row + size) && (r < pixels.length); r++) {
-                    for (int c = col; (c < col + size) && (c < pixels[0].length); c++) {
+                for (int r = row; (r < row + size) && 
+											(r < pixels.length); r++) {
+                    for (int c = col; (c < col + size) && 
+										(c < pixels[0].length); c++) {
                         sumRed += pixels[r][c].getRed();
                         sumGreen += pixels[r][c].getGreen();
                         sumBlue += pixels[r][c].getBlue();
@@ -292,8 +294,10 @@ public class Picture extends SimplePicture
                 int avgRed = sumRed / count;
                 int avgGreen = sumGreen / count;
                 int avgBlue = sumBlue / count;
-                for (int r = row; r < row + size && r < pixels.length; r++) {
-                    for (int c = col; c < col + size && c < pixels[0].length; c++) {
+                for (int r = row; r < row + size && 
+											(r < pixels.length); r++) {
+                    for (int c = col; (c < col + size) && 
+										(c < pixels[0].length); c++) {
                         pixels[r][c].setRed(avgRed);
                         pixels[r][c].setGreen(avgGreen);
                         pixels[r][c].setBlue(avgBlue);
@@ -351,8 +355,8 @@ public class Picture extends SimplePicture
 	 * and longer compute time.
 	 * @return enhanced picture
 	 */
-	 public Picture enhance(int size) {
-		 Pixel[][] pixels = this.getPixels2D();
+	public Picture enhance(int size) {
+		Pixel[][] pixels = this.getPixels2D();
 		Picture result = new Picture(pixels.length, pixels[0].length);
 		Pixel[][] resultPixels = result.getPixels2D();
 		
@@ -375,18 +379,20 @@ public class Picture extends SimplePicture
 					}
 				}
 				int avgRed = sumRed / count;
-            int avgGreen = sumGreen / count;
-            int avgBlue = sumBlue / count;
-            
-            // Apply enhancement formula
-            int newRed = Math.min(255, Math.max(0, 2 * pixels[row][col].getRed() - avgRed));
-            System.out.println(2 * pixels[row][col].getRed() - avgRed);
-            int newGreen = Math.min(255, Math.max(0, 2 * pixels[row][col].getGreen() - avgGreen));
-            int newBlue = Math.min(255, Math.max(0, 2 * pixels[row][col].getBlue() - avgBlue));
+				int avgGreen = sumGreen / count;
+				int avgBlue = sumBlue / count;
+				
+				int newRed = Math.min(255, Math.max(0, 2 * 
+									pixels[row][col].getRed() - avgRed));
+				System.out.println(2 * pixels[row][col].getRed() - avgRed);
+				int newGreen = Math.min(255, Math.max(0, 2 * 
+								pixels[row][col].getGreen() - avgGreen));
+				int newBlue = Math.min(255, Math.max(0, 2 * 
+									pixels[row][col].getBlue() - avgBlue));
 
-            resultPixels[row][col].setRed(newRed);
-            resultPixels[row][col].setGreen(newGreen);
-            resultPixels[row][col].setBlue(newBlue);
+				resultPixels[row][col].setRed(newRed);
+				resultPixels[row][col].setGreen(newGreen);
+				resultPixels[row][col].setBlue(newBlue);
 			}
 		}
 		
@@ -395,6 +401,9 @@ public class Picture extends SimplePicture
     
 //4c:
 
+	/**
+	 * swapLeftRight() 
+	 */
 	public Picture swapLeftRight(){
 		Pixel[][] pixels = this.getPixels2D();
 		Picture result = new Picture(pixels.length, pixels[0].length);
@@ -403,11 +412,11 @@ public class Picture extends SimplePicture
 		for(int r=0; r<pixels.length; r++){
 			for(int c=0; c <pixels[r].length ; c++){
 				resultPixels[r][(c+pixels[r].length/2) %
-								pixels[r].length].setRed(pixels[r][c].getRed());
+						pixels[r].length].setRed(pixels[r][c].getRed());
 				resultPixels[r][(c+pixels[r].length/2) %
-							pixels[r].length].setGreen(pixels[r][c].getGreen());
+						pixels[r].length].setGreen(pixels[r][c].getGreen());
 				resultPixels[r][(c+pixels[r].length/2) %
-								pixels[r].length].setBlue(pixels[r][c].getBlue());
+						pixels[r].length].setBlue(pixels[r][c].getBlue());
 			}
 		}
 		
@@ -425,15 +434,14 @@ public class Picture extends SimplePicture
 		Picture result = new Picture(pixels.length, pixels[0].length);
 		Pixel[][] resultPixels = result.getPixels2D();
 		
-		
 		for(int r=0; r< pixels.length;r++){
 			for(int c = 0; c < pixels[r].length;c++){				
-				resultPixels[r][(c+ (r/(pixels.length/steps))*shiftCount) % pixels[r].length]
-								.setRed(pixels[r][c].getRed());
-				resultPixels[r][(c+(r/(pixels.length/steps))*shiftCount) % pixels[r].length].
-												setGreen(pixels[r][c].getGreen());
-				resultPixels[r][(c+(r/(pixels.length/steps))*shiftCount) % pixels[r].length]
-								.setBlue(pixels[r][c].getBlue());
+				resultPixels[r][(c+ (r/(pixels.length/steps))*shiftCount) 
+						% pixels[r].length].setRed(pixels[r][c].getRed());
+				resultPixels[r][(c+(r/(pixels.length/steps))*shiftCount) 
+					% pixels[r].length].setGreen(pixels[r][c].getGreen());
+				resultPixels[r][(c+(r/(pixels.length/steps))*shiftCount) 
+					% pixels[r].length].setBlue(pixels[r][c].getBlue());
 			}
 		}
 		
@@ -445,7 +453,7 @@ public class Picture extends SimplePicture
 	 * @return Liquified picture
 	 */
 	 public Picture liquify(int maxHeight){
-		 Pixel[][] pixels = this.getPixels2D();
+		Pixel[][] pixels = this.getPixels2D();
 		Picture result = new Picture(pixels.length, pixels[0].length);
 		Pixel[][] resultPixels = result.getPixels2D();
 		
@@ -453,15 +461,15 @@ public class Picture extends SimplePicture
 		int bellWidth= 70;
 		for(int row = 0; row < pixels.length; row++){
 			for(int col =0; col < pixels[row].length ; col++){
-				double exponent = Math.pow(row - height/2.0, 2) / (2.0 * Math.pow(bellWidth,2));
+				double exponent = Math.pow(row - height/2.0, 2) / 
+											(2.0 * Math.pow(bellWidth,2));
 				int rightShift = (int)(maxHeight * Math.exp(- exponent));
 				resultPixels[row][ (col+rightShift)  % pixels[row].length]
-								.setRed(pixels[row][col].getRed());
+									.setRed(pixels[row][col].getRed());
 				resultPixels[row][ (col+rightShift)  % pixels[row].length].
-												setGreen(pixels[row][col].getGreen());
+									setGreen(pixels[row][col].getGreen());
 				resultPixels[row][ (col+rightShift)  % pixels[row].length]
-								.setBlue(pixels[row][col].getBlue());
-				
+									.setBlue(pixels[row][col].getBlue());
 			}
 		}
 		
@@ -479,17 +487,11 @@ public class Picture extends SimplePicture
 		
 		int phaseShift = 0;
 		int f = 5;
-		System.out.println( " (Math.sin()" + (Math.sin(2.0) ) );
-		System.out.println( " (Math.sin()" + (Math.sin(1.0) ) );
-		System.out.println( " (Math.sin()" + (Math.sin(0) ) );
-		System.out.println( " (Math.sin()" + (Math.sin(30.0) ) );
-		System.out.println( " (Math.sin()" + (Math.sin(40.0) ) );
-		System.out.println( " (Math.sin()" + (Math.sin(50.0) ) );
 
-		System.out.println("before 1st for");
 		for(int row =0; row < pixels.length; row++){
 			for(int col =0; col< pixels[row].length; col++){
-				int pixShift = (int) (/*(double)*/amplitude * (Math.sin(2.0 * Math.PI * f * ((double)row/pixels.length) + phaseShift)));
+				int pixShift = (int) (amplitude * (Math.sin(2.0 * Math.PI 
+						* f * ((double)row/pixels.length) + phaseShift)));
 				int newCol = (col + pixShift) % pixels[row].length;
 				if (newCol < 0)
 					newCol += pixels[row].length;
@@ -502,29 +504,5 @@ public class Picture extends SimplePicture
 		
 		return result;
 	 }
-	 
-	 
-//6a:
-	 public void edgeDetection(int edgeDist)
-	 {
-		 Pixel leftPixel = null;
-		 Pixel rightPixel = null;
-		 Pixel[][] pixels = this.getPixels2D();
-		 Color rightColor = null;
-		 for (int row = 0; row < pixels.length; row++)
-		 {
-			 for (int col = 0;
-			 col < pixels[0].length-1; col++)
-			 {
-				 leftPixel = pixels[row][col];
-				 rightPixel = pixels[row][col+1];
-				 rightColor = rightPixel.getColor();
-				 if (leftPixel.colorDistance(rightColor) >
-				 edgeDist)
-					leftPixel.setColor(Color.BLACK);
-				 else
-					leftPixel.setColor(Color.WHITE);
-			 }
-		 }
-	 }
+
 } // this } is the end of class Picture, put all new methods before this
