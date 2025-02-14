@@ -504,5 +504,53 @@ public class Picture extends SimplePicture
 		
 		return result;
 	 }
+	 
+	 ///////////////////////////// -6- ////////////////////////////////
+
+	/** Method that creates an edge detected black/white picture
+	 * @param threshold threshold as determined by Pixel’s colorDistance method
+	 * @return edge detected picture
+	 */
+	public Picture edgeDetectionBelow(int threshold) {
+		Pixel[][] pixels = this.getPixels2D();
+		Picture result = new Picture(pixels.length, pixels[0].length);
+		Pixel[][] resultPixels = result.getPixels2D(); 
+		
+		
+		Pixel leftPixel = null;
+		Pixel rightPixel = null;
+		Color rightColor = null;
+		for (int col = 0; col < pixels[0].length; col++){
+			for (int row = 0; row < pixels.length-1; row++) {
+				leftPixel = pixels[row][col];
+				rightPixel = pixels[row+1][col];
+				rightColor = rightPixel.getColor();
+				if (leftPixel.colorDistance(rightColor) > threshold)
+					resultPixels[row][col].setColor(Color.BLACK);
+				else
+					resultPixels[row][col].setColor(Color.WHITE);
+			}
+		}
+		return result;
+	}
+	
+	/** Method that creates a green screen picture
+	 * @return green screen picture
+	 */
+	public Picture greenScreen()
+	{
+		// Get background picture
+		Picture bkgnd = new Picture("greenScreenImages/IndoorHouseLibraryBackground.jpg");
+		Pixel[][] bkgndPixels = bkgnd.getPixels2D();
+		// Get cat picture
+		Picture cat = (new Picture("greenScreenImages/kitten1GreenScreen.jpg")).scale(0.125,0.125);
+		Pixel[][] catPixels = cat.getPixels2D();
+		// Get mouse picture
+		Picture mouse = (new Picture("greenScreenImages/mouse1GreenScreen.jpg")).scale(0.125,0.125);
+		Pixel[][] mousePixels = mouse.getPixels2D();
+		
+		
+		return bkgnd;
+	}
 
 } // this } is the end of class Picture, put all new methods before this
