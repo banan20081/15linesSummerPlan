@@ -1,4 +1,6 @@
 import java.util.List;		// used by expression evaluator
+// banan added:
+import java.util.Scanner;
 
 /**
  *	<Description goes here>
@@ -15,7 +17,9 @@ public class SimpleCalc {
 
 	// constructor	
 	public SimpleCalc() {
-		
+		utils = new ExprUtils();
+		valueStack = new ArrayStack<Double>();
+		operatorStack = new ArrayStack<String>();
 	}
 	
 	public static void main(String[] args) {
@@ -34,7 +38,17 @@ public class SimpleCalc {
 	 *	and display the answer.
 	 */
 	public void runCalc() {
-		
+		String input = "";
+		do{
+			input = Prompt.getString("");
+			if(input != null){
+				if(input.equals("q")) return;
+				if(input.equals("h")) printHelp();
+				List<String> tokens = utils.tokenizeExpression(input);
+				System.out.println(evaluateExpression(tokens));
+			}
+		//	else if(input.equals("l")) //display current variables;
+		}while(input != null && !input.equals("q"));
 	}
 	
 	/**	Print help */
