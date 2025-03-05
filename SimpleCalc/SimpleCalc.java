@@ -39,16 +39,31 @@ public class SimpleCalc {
 	 */
 	public void runCalc() {
 		String input = "";
+		double value =0.0;
 		do{
 			input = Prompt.getString("");
 			if(input != null){
 				if(input.equals("q")) return;
 				if(input.equals("h")) printHelp();
-				List<String> tokens = utils.tokenizeExpression(input);
-				System.out.println(evaluateExpression(tokens));
+				boolean valid = true;
+				for(int i=0;i<input.length(); i++){
+					if (isPunctuation(input.charAt(i))) valid = false;
+				}
+				if(valid){
+					List<String> tokens = utils.tokenizeExpression(input);
+					value = evaluateExpression(tokens);
+					System.out.println();
+				}
+				
 			}
-		//	else if(input.equals("l")) //display current variables;
+			else if(input != null && input.equals("l")){ //display current variables;
+				
+			}
 		}while(input != null && !input.equals("q"));
+	}
+	
+	public boolean isPunctuation(char c){
+		return "!_@#$&<>?:;\"{}[]|~`".indexOf(c) != -1;
 	}
 	
 	/**	Print help */
