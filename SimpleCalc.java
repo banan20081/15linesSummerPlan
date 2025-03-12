@@ -45,21 +45,36 @@ public class SimpleCalc {
 			if(input != null){
 				if(input.equals("q")) return;
 				if(input.equals("h")) printHelp();
-				boolean valid = true;
-				for(int i=0;i<input.length(); i++){
-					if (isPunctuation(input.charAt(i))) valid = false;
-					//~ if (!Character.isDigit(input.charAt(i)) && !utils.isOperator(input.charAt(i))) valid = false;
-				}
-				if(valid){
-					System.out.println("valid");
-					List<String> tokens = utils.tokenizeExpression(input);
-					value = evaluateExpression(tokens);
-					System.out.println(value);
+				else{
+					boolean valid = true;
+					boolean hasLetter = false;
+					for(int i=0;i<input.length(); i++){
+						if (isPunctuation(input.charAt(i))) valid = false;
+						else if ((input.charAt(i) >= 'A' && input.charAt(i) <= 'Z')
+							||(input.charAt(i) >= 'a' && input.charAt(i) <= 'z')){
+								hasLetter = true;
+							}
+							if((isNumeric(input.substring(0,i)) || isNumeric(input.substring(i))) && hasLetter){
+									valid = false;
+									System.out.println("is false  letter");
+								}
+								else{
+									//~ valid =true;
+									System.out.println("real letter");
+								}
+						//~ if (!Character.isDigit(input.charAt(i)) && !utils.isOperator(input.charAt(i))) valid = false;
+					}
+					if(valid){
+						//System.out.println("valid");
+						List<String> tokens = utils.tokenizeExpression(input);
+						value = evaluateExpression(tokens);
+						System.out.println(value);
+					}
 				}
 				
 			}
 			else if(input != null && input.equals("l")){ //display current variables;
-				
+				// display current ariables
 					
 			
 			}
@@ -85,42 +100,57 @@ public class SimpleCalc {
 	 *	@param tokens	a List of String tokens making up an arithmetic expression
 	 *	@return			a double value of the evaluated expression
 	 */
-	public double evaluateExpression(List<String> tokens) {
-		double value = 0;
-		for(int i =0; i < tokens.size(); i++){
-			if(tokens.get(i).length() == 1 && utils.isOperator(tokens.get(i).charAt(0)) ) {
-				operatorStack.push(tokens.get(i));
-			}
-			else{
-				valueStack.push(Double.parseDouble(tokens.get(i)));
-			}
-		}
-		
-		
-		//~ check if ( add to stack 
-		//~ if ) loop backwards to ( , get the values out of stack and solve it until you get to the ( paranthesis
-		//~ popped the left paranthesis 
-		//~ create a method that solves any two values with any operator 
-		//~ switch 
-		
-		
-		
-		//~ while(!operatorStack.isEmpty()){
-			//~ String op1 = operatorStack.pop();
-			//~ if(operatorStack.isEmpty()){
-				
-			//~ }
-		//~ }
-		
-		//~ while(!valueStack.isEmpty()){
-			//~ System.out.println(valueStack.pop()+ " " );
-		//~ }
-		//~ while(!operatorStack.isEmpty()){
-			//~ System.out.println(operatorStack.pop()+ " " );
-		//~ }
-		
-		return value;
-	}
+	  public double evaluateExpression(List<String> tokens) {
+        for (String token : tokens) {
+            if (isNumeric(token)) {
+                valueStack.push(Double.parseDouble(token));
+            } else if (token.equals("(")) {
+                operatorStack.push(token);
+            } else if (token.equals(")")) {
+                while (!operatorStack.isEmpty() && !operatorStack.peek().equals("(")) {
+                    processOperator();
+                }
+                operatorStack.pop();
+            } else {
+                while (!operatorStack.isEmpty() && hasPrecedence(token, operatorStack.peek())) {
+                    processOperator();
+                }
+                operatorStack.push(token);
+            }
+        }
+        while (!operatorStack.isEmpty()) {
+            processOperator();
+        }
+        return valueStack.pop();
+    }
+
+    private void processOperator() {
+        String operator = operatorStack.pop();
+        double b = valueStack.pop();
+        double a = valueStack.pop();
+        valueStack.push(applyOperator(operator, a, b));
+    }
+
+    private double applyOperator(String operator, double a, double b) {
+        return switch (operator) {
+            case "+" -> a + b;
+            case "-" -> a - b;
+            case "*" -> a * b;
+            case "/" -> a / b;
+            case "%" -> a % b;
+            case "^" -> Math.pow(a, b);
+            default -> throw new IllegalArgumentException("Invalid operator: " + operator);
+        };
+    }
+    
+        private boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 	
 	/**
 	 *	Precedence of operators
