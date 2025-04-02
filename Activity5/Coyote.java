@@ -8,94 +8,138 @@ import java.util.ArrayList;
 import java.awt.Color;
 
 public class Coyote extends Critter{
+	private int steps; 
 	
+	public Coyote(){
+		setColor(null);
+		setDirection(dirChooser());
+	}
+	
+	public int dirChooser(){
+		return (int) (Math.random() * 8) * 45;
+	}
+	
+	public void makeMove(Location loc){
+		Grid gr = getGrid();
+		if(gr.get(loc) instanceof Boulder){
+			Kaboom kbm = new Kaboom();
+			//~ Grid<Actor> gr = getGrid();
+			removeSelfFromGrid();
+			kbm.putSelfInGrid(gr, getLocation());
+			return;
+		}
+		// handle this in getMoveLocation
+		//~ else if(gr.get(loc) instanceof Stone){
+			//~ int dir;
+			//~ Location adjLoc;
+			//~ do{
+				//~ dir = dirChooser();
+				//~ adjLoc = getGrid().getAdjacentLocation(dir);
+			//~ }while(dir == getDirection());
+			
+		//~ }
+		
+		
+		if(steps >=5 || !gr.isValid(loc) || gr.get(loc)){
+			if(steps >=5){
+				//Stone st = new Stone();
+				dropStone();
+			}
+			setDirection(dirChooser());
+		}
+	}
+	
+	public void dropStone() {
+        Grid<Actor> grid = getGrid();
+        if (grid == null) return;
+        
+        ArrayList<Location> emptyLocs = grid.getEmptyAdjacentLocations(getLocation());
+        if (!emptyLocs.isEmpty()) {
+            grid.put(emptyLocs.get((int) (Math.random() * emptyLocs.size())), new Stone());
+        }
+    }
 }
 
 
-//~ import info.gridworld.actor.Actor;
-//~ import info.gridworld.actor.Critter;
-//~ import info.gridworld.grid.Location;
-//~ import info.gridworld.grid.Grid;
-//~ import info.gridworld.actor.Rock;
-//~ import java.util.ArrayList;
+//~ ///
+//~ public class Coyote extends Critter {
+    //~ private int steps;
+    //~ private int sleepTime;
+    //~ private int sleepCounter;
 
-public class Coyote extends Critter {
-    private int steps;
-    private int sleepTime;
-    private int sleepCounter;
+    //~ public Coyote() {
+        //~ steps = 0;
+        //~ sleepTime = 5;
+        //~ sleepCounter = 0;
+        //~ setColor(null);
+        //~ setDirection(dirChooser());
+    //~ }
 
-    public Coyote() {
-        steps = 0;
-        sleepTime = 5;
-        sleepCounter = 0;
-        setColor(null);
-        setDirection(dirChooser());
-    }
+    //~ public int dirChooser() {
+		//~ do{
+			//~ int rand= (int) (Math.random() * 8) * 45;
+		//~ }while(getLocation().);
+    //~ }
 
-    public int dirChooser() {
-        int[] directions = {0, 45, 90, 135, 180, 225, 270, 315};
-        return directions[(int) (Math.random() * directions.length)];
-    }
+    //~ public ArrayList<Location> getMoveLocations() {
+        //~ ArrayList<Location> locs = new ArrayList<>();
+        //~ if (sleepCounter > 0) {
+            //~ sleepCounter--;
+            //~ return locs; // Stay in place while sleeping
+        //~ }
 
-    public ArrayList<Location> getMoveLocations() {
-        ArrayList<Location> locs = new ArrayList<>();
-        if (sleepCounter > 0) {
-            sleepCounter--;
-            return locs; // Stay in place while sleeping
-        }
-
-        Grid<Actor> gr = getGrid();
-        if (gr == null) return locs;
+        //~ Grid<Actor> gr = getGrid();
+        //~ if (gr == null) return locs;
         
-        Location loc = getLocation();
-        for (int i = 1; i <= 5; i++) {
-            Location next = loc.getAdjacentLocation(getDirection());
-            if (!gr.isValid(next)) break;
-            Actor neighbor = gr.get(next);
-            if (neighbor instanceof Boulder) {
-                neighbor.removeSelfFromGrid(); // Boulder explodes
-                removeSelfFromGrid(); // Coyote is removed
-                return locs; 
-            }
-            if (neighbor != null) break;
-            locs.add(next);
-            loc = next;
-        }
-        return locs;
-    }
+        //~ Location loc = getLocation();
+        //~ for (int i = 1; i <= 5; i++) {
+            //~ Location next = loc.getAdjacentLocation(getDirection());
+            //~ if (!gr.isValid(next)) break;
+            //~ Actor neighbor = gr.get(next);
+            //~ if (neighbor instanceof Boulder) {
+                //~ neighbor.removeSelfFromGrid(); // Boulder explodes
+                //~ removeSelfFromGrid(); // Coyote is removed
+                //~ return locs; 
+            //~ }
+            //~ if (neighbor != null) break;
+            //~ locs.add(next);
+            //~ loc = next;
+        //~ }
+        //~ return locs;
+    //~ }
 
-    public Location selectMoveLocation(ArrayList<Location> locs) {
-        if (locs.isEmpty()) {
-            sleepCounter = sleepTime;
-            setDirection(dirChooser());
-            return getLocation();
-        }
-        return locs.get(locs.size() - 1); // Move in a straight line as far as possible
-    }
+    //~ public Location selectMoveLocation(ArrayList<Location> locs) {
+        //~ if (locs.isEmpty()) {
+            //~ sleepCounter = sleepTime;
+            //~ setDirection(dirChooser());
+            //~ return getLocation();
+        //~ }
+        //~ return locs.get(locs.size() - 1); // Move in a straight line as far as possible
+    //~ }
 
-    public void makeMove(Location loc) {
-        if (loc.equals(getLocation())) return; // Stay in place if sleeping
+    //~ public void makeMove(Location loc) {
+        //~ if (loc.equals(getLocation())) return; // Stay in place if sleeping
         
-        super.makeMove(loc);
-        steps++;
+        //~ super.makeMove(loc);
+        //~ steps++;
         
-        if (steps >= 2) { // Every two steps, drop a stone and change direction
-            steps = 0;
-            dropStone();
-            setDirection(dirChooser());
-        }
-    }
+        //~ if (steps >= 5) { // Every two steps, drop a stone and change direction
+            //~ steps = 0;
+            //~ dropStone();
+            //~ setDirection(dirChooser());
+        //~ }
+    //~ }
 
-    private void dropStone() {
-        Grid<Actor> gr = getGrid();
-        if (gr == null) return;
+    //~ private void dropStone() {
+        //~ Grid<Actor> gr = getGrid();
+        //~ if (gr == null) return;
         
-        ArrayList<Location> emptyLocs = gr.getEmptyAdjacentLocations(getLocation());
-        if (!emptyLocs.isEmpty()) {
-            Location stoneLoc = emptyLocs.get((int) (Math.random() * emptyLocs.size()));
-            new Stone().putSelfInGrid(gr, stoneLoc);
-        }
-    }
+        //~ ArrayList<Location> emptyLocs = gr.getEmptyAdjacentLocations(getLocation());
+        //~ if (!emptyLocs.isEmpty()) {
+            //~ Location stoneLoc = emptyLocs.get((int) (Math.random() * emptyLocs.size()));
+            //~ new Stone().putSelfInGrid(gr, stoneLoc);
+        //~ }
+    //~ }
 }
 
 //~ public class Coyote extends Critter{
@@ -340,4 +384,3 @@ public class Coyote extends Critter {
         //~ setDirection(directions[(int)(Math.random() * 8)]);
     //~ }
 //~ }
-
