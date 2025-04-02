@@ -20,12 +20,12 @@ public class Boulder extends Actor{
 	}
 	
 	public void act(){
-		if(lifeTime <THRESHOLD) setColor(Color.RED);
 		if(lifeTime==0) {
 			Grid<Actor> gr = getGrid();
 			Kaboom kb = new Kaboom();
 			kb.putSelfInGrid(gr, getLocation());
 		}
+		else if(lifeTime <THRESHOLD) setColor(Color.RED);
 		lifeTime--;
 	}
 }

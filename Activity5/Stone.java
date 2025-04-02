@@ -20,12 +20,12 @@ public class Stone extends Rock{
 	}
 	
 	public void act(){
-		if(lifeTime <THRESHOLD) setColor(Color.GREEN);
 		if(lifeTime ==0) {
 			Boulder bld = new Boulder();
 			Grid<Actor> gr = getGrid();
 			bld.putSelfInGrid(gr, getLocation());
 		}
+		else if(lifeTime <THRESHOLD) setColor(Color.GREEN);
 		lifeTime--;
 	}
 }
